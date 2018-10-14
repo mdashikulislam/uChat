@@ -14,8 +14,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -38,10 +41,46 @@ public class SettingActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         InitializFeilds();
+        _userName.setVisibility(View.INVISIBLE);
         _updateAccountSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateAccountSetting();
+            }
+        });
+
+        retriveUserInfo();
+    }
+
+    private void retriveUserInfo() {
+        databaseReference.child("User").child(currentuserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.exists()) && ((dataSnapshot.hasChild("name")) && (dataSnapshot.hasChild("image")))){
+
+                    String receveUserName = dataSnapshot.child("name").getValue().toString();
+                    String receveUserStatus = dataSnapshot.child("status").getValue().toString();
+                    String receveUserProfileImage = dataSnapshot.child("image").getValue().toString();
+
+                    _userName.setText(receveUserName);
+                    _userStatus.setText(receveUserStatus);
+
+
+                }else if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))){
+                    String receveUserName = dataSnapshot.child("name").getValue().toString();
+                    String receveUserStatus = dataSnapshot.child("status").getValue().toString();
+
+                    _userName.setText(receveUserName);
+                    _userStatus.setText(receveUserStatus);
+                }else {
+                    _userName.setVisibility(View.VISIBLE);
+                    Toast.makeText(SettingActivity.this,"Please Update your profile...",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
