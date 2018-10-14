@@ -21,7 +21,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SettingActivity" />
-        <activity android:name=".GroupChatActivity"></activity>
+        <activity android:name=".GroupChatActivity" />
+        <activity android:name=".PhoneVerificationActivity"></activity>
     </application>
 
 </manifest>
