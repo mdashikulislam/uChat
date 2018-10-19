@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("name").exists()){
-                    Toast.makeText(MainActivity.this,"Welcome",Toast.LENGTH_SHORT).show();
+
                 }else {
-                    //Toast.makeText(MainActivity.this,"",Toast.LENGTH_SHORT).show();
-                    sendUserToSettingActivity();
+
+                    sendUserToSettingActivityNewTask();
                 }
             }
 
@@ -92,11 +92,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     }
-    private void sendUserToSettingActivity() {
+    private void sendUserToSettingActivityNewTask() {
         Intent i = new Intent(MainActivity.this,SettingActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
+    }
+    private void sendUserToSettingActivity() {
+        Intent i = new Intent(MainActivity.this,SettingActivity.class);
+        startActivity(i);
+    }
+    private void sendUserToFindFriendsActivity() {
+        Intent i = new Intent(MainActivity.this,FindFriendsActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -117,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             sendUserToSettingActivity();
         }
         if (item.getItemId() == R.id.main_find_friends_option){
-
+            sendUserToFindFriendsActivity();
         }
         if (item.getItemId() == R.id.main_create_group_option){
             requestNewGroup();
